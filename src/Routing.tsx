@@ -7,6 +7,8 @@ const Rewards = lazy(
   () => new Promise((resolve) => resolve(import("./Pages/Rewards")))
 );
 
+//update route
+
 const Routing = () => {
   const routes = createBrowserRouter([
     {
