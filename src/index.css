@@ -1,0 +1,50 @@
+body {
+  width: 100vw;
+  height: 100vh;
+  padding: 0;
+  margin: 0;
+  font-family: "Georgia", serif;
+  font-weight: bold;
+  overflow-x: hidden;
+}
+* {
+  font-family: "Georgia", serif;
+  font-weight: bold;
+}
+#root {
+  width: 100%;
+  height: 100%;
+}
+
+.css-ed63ti-MuiInputBase-root-MuiInput-root::after {
+  border-bottom: none !important;
+}
+.css-ed63ti-MuiInputBase-root-MuiInput-root:hover {
+  border-bottom: none !important;
+}
+.css-1v96840-MuiInputBase-root-MuiInput-root {
+  border: none !important;
+}
+.css-1v96840-MuiInputBase-root-MuiInput-root::before {
+  border: none !important;
+}
+.css-1v96840-MuiInputBase-root-MuiInput-root::after {
+  border-color: transparent !important;
+}
+.css-1ll44ll-MuiOutlinedInput-notchedOutline {
+  border-color: transparent !important;
+}
+
+.css-1yrc8ca-MuiInputBase-input-MuiInput-input {
+  border-color: transparent !important;
+}
+.css-1yrc8ca-MuiInputBase-input-MuiInput-input::before {
+  border: none !important;
+}
+
+.css-5h82ro-MuiInputBase-root-MuiInput-root::after {
+  border: none !important;
+}
+.css-5h82ro-MuiInputBase-root-MuiInput-root::before {
+  border: none !important;
+}
