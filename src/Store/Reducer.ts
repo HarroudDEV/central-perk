@@ -18,7 +18,7 @@ export type initialState = {
   addRewardsModal: boolean;
 };
 const data: initialState = {
-  products: new Array(10).fill(0).map((e) => ({
+  products: new Array(1).fill(0).map((e) => ({
     id: uuidv4(),
     title: "Espresso",
     image:

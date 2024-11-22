@@ -143,7 +143,7 @@ function Dashboard() {
                     padding: "0rem",
                     borderRadius: "0.45rem",
                   }}
-                  onClick={() => setDisplayCount((prev) => prev + 5)}
+                  onClick={() => setDisplayCount(products.length)}
                 >
                   View All
                 </Button>
