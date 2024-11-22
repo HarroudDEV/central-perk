@@ -1,5 +1,4 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import App from "./Pages/Dashboard";
 import { lazy, Suspense } from "react";
 const Dashboard = lazy(
   () => new Promise((resolve) => resolve(import("./Pages/Dashboard")))
