@@ -53,7 +53,8 @@ const StyledMenu = styled((props: MenuProps) => (
 }));
 const Product: FC<{
   product: ProductType;
-}> = ({ product }) => {
+  manage: boolean;
+}> = ({ product, manage }) => {
   const dispatch = useDispatch();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
@@ -90,7 +91,12 @@ const Product: FC<{
       >
         <div
           className="manage"
-          style={{ position: "absolute", top: "0", right: "0" }}
+          style={{
+            position: "absolute",
+            top: "0",
+            right: "0",
+            display: manage === true ? "block" : "none",
+          }}
         >
           <Button
             id="demo-customized-button"

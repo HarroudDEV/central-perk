@@ -48,3 +48,29 @@ body {
 .css-5h82ro-MuiInputBase-root-MuiInput-root::before {
   border: none !important;
 }
+
+@media screen and (max-width: 600px) {
+  .full-display-mobile {
+    width: 100% !important;
+  }
+}
+input,
+textarea,
+fieldset {
+  color: #434d55 !important;
+}
+label {
+  color: #434d55 !important;
+}
+
+.nav-link-desktop-v:is(:hover) {
+  border-radius: 1.75rem !important;
+  background: rgb(45, 136, 86) !important;
+}
+
+.nav-link-desktop-v:hover > svg {
+  color: white !important;
+}
+.nav-link-desktop-v:hover > div > span {
+  color: white !important;
+}

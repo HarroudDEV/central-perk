@@ -197,6 +197,8 @@ import {
   Modal,
 } from "@mui/material";
 import Grid from "@mui/material/Grid2";
+import img from "../../assets/react.svg";
+import ImageIcon from "@mui/icons-material/Image";
 
 import { modalOpen, Product as ProductType } from "../../Store/Reducer";
 import { useDispatch, useSelector } from "react-redux";
@@ -204,14 +206,13 @@ import { RootStore } from "../../Store";
 import { SubmitHandler, useForm, Controller } from "react-hook-form";
 import { addNewProduct } from "../../Store/Reducer";
 import { v4 as uuidv4 } from "uuid";
-import Product from "../Product";
 const style = {
   position: "absolute",
   top: "50%",
   left: "50%",
   transform: "translate(-50%, -50%)",
-  width: 700,
-  height: 400,
+  width: "70%",
+  height: { xs: "90%", sm: "450px", m: "450px" },
   bgcolor: "background.paper",
   boxShadow: 24,
   borderRadius: "0.5rem",
@@ -225,6 +226,20 @@ type FormFields = {
   rewardPoints: number;
   description: string;
 };
+
+import CloudUploadIcon from "@mui/icons-material/CloudUpload";
+import { styled } from "@mui/material/styles";
+const VisuallyHiddenInput = styled("input")({
+  clip: "rect(0 0 0 0)",
+  clipPath: "inset(50%)",
+  height: 1,
+  overflow: "hidden",
+  position: "absolute",
+  bottom: 0,
+  left: 0,
+  whiteSpace: "nowrap",
+  width: 1,
+});
 
 const AddRewardsModal = () => {
   const open = useSelector((state: RootStore) => state.addRewardsModal);
@@ -266,10 +281,11 @@ const AddRewardsModal = () => {
       >
         <form onSubmit={handleSubmit(addProductHandler)}>
           <Box sx={style}>
-            <Grid container spacing={2}>
+            <h4 style={{ color: "#2E8956" }}>Add new Reward</h4>
+            <h6 style={{ color: "#434D55" }}>Reward details</h6>
+            <Grid container spacing={2} columns={{ xs: 4, sm: 8, md: 12 }}>
               <Grid size={6}>
                 <FormControl fullWidth>
-                  {/* Use TextField instead of Input for Reward Title */}
                   <TextField
                     label="Reward Title"
                     variant="outlined"
@@ -282,7 +298,6 @@ const AddRewardsModal = () => {
                     }}
                   />
 
-                  {/* Category Select */}
                   <Controller
                     name="category"
                     control={control}
@@ -337,21 +352,74 @@ const AddRewardsModal = () => {
                   />
                 </FormControl>
               </Grid>
-              <Grid size={6}>
-                <Input type="file" onChange={handleProductImage} />
-                <Box sx={{ marginTop: "1rem", display: "flex", gap: "1rem" }}>
-                  <Button
-                    type="submit"
-                    variant="contained"
-                    style={{
-                      background: "green",
-                      padding: "0.3rem 2rem",
-                      borderRadius: "1rem",
-                      border: "none",
-                    }}
+              <Grid size={6} sx={{ padding: "0.5rem" }}>
+                <div
+                  className="upload-file-container"
+                  style={{
+                    display: "flex",
+                    justifyContent: "center",
+                    flexDirection: "column",
+                    gap: "2rem",
+                    borderRadius: "0.75rem",
+                    alignItems: "center",
+                    height: "12rem",
+                    background: "#FFF4E4",
+                    padding: "0rem 1rem",
+                  }}
+                >
+                  <div
+                    className="file-uploaded-img"
+                    style={{ maxWidth: "5rem" }}
                   >
-                    Save
-                  </Button>
+                    {(productImage && (
+                      <img
+                        src=""
+                        alt=""
+                        srcSet={productImage || img}
+                        style={{
+                          width: "100%",
+                          height: "100%",
+                          objectFit: "contain",
+                        }}
+                        // alt="product image"
+                      />
+                    )) || (
+                      <ImageIcon sx={{ color: "#2E8956", fontSize: "3rem" }} />
+                    )}
+                  </div>
+                  <div className="upload-btn">
+                    <Button
+                      component="label"
+                      role={undefined}
+                      variant="contained"
+                      tabIndex={-1}
+                      startIcon={<CloudUploadIcon sx={{ color: "#2E8956" }} />}
+                      style={{
+                        background: "#FFF4E4",
+                        color: "green",
+                        boxShadow: "none",
+                      }}
+                    >
+                      <span
+                        style={{
+                          color: "#2E8956",
+                        }}
+                      >
+                        Upload Image
+                      </span>
+                      <VisuallyHiddenInput
+                        type="file"
+                        onChange={handleProductImage}
+                        multiple
+                      />
+                    </Button>
+                    <br />
+                  </div>
+                  <span style={{ fontSize: "0.7rem", color: "#434D55" }}>
+                    Upload a cover image for your product
+                  </span>
+                </div>
+                <Box sx={{ marginTop: "1rem", display: "flex", gap: "1rem" }}>
                   <Button
                     onClick={() => closeModal()}
                     variant="outlined"
@@ -360,9 +428,22 @@ const AddRewardsModal = () => {
                       padding: "0.3rem 2rem",
                       borderRadius: "1rem",
                       border: "none",
+                      color: "#434D55",
                     }}
                   >
                     Cancel
+                  </Button>
+                  <Button
+                    type="submit"
+                    variant="contained"
+                    style={{
+                      background: "#2E8A57",
+                      padding: "0.3rem 2rem",
+                      borderRadius: "1rem",
+                      border: "none",
+                    }}
+                  >
+                    Save
                   </Button>
                 </Box>
               </Grid>

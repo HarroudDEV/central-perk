@@ -2,66 +2,86 @@ import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid2";
 import { Gauge, gaugeClasses } from "@mui/x-charts/Gauge";
 import { LineChart } from "@mui/x-charts";
-import SideNavbar from "../Components/SideNavbar";
 import { useSelector } from "react-redux";
 import { RootStore } from "../Store/index";
 import Product from "../Components/Product";
 import { Product as ProductType } from "../Store/Reducer";
 import Button from "@mui/material/Button";
 import { useState } from "react";
+import MobileSideNavbar from "../Components/MobileSideNavbar";
+import SideNavbar from "../Components/SideNavbar";
 
 function Dashboard() {
   const products = useSelector((state: RootStore) => state.products);
+  const rewardedPoints = useSelector(
+    (state: RootStore) => state.rewardedPoints
+  );
+  const redeemPoints = useSelector((state: RootStore) => state.redeemPoints);
   const [displayCount, setDisplayCount] = useState<number>(4);
   return (
-    <Box sx={{ flexGrow: 1 }} style={{ height: "100%", width: "100%" }}>
-      <Grid container spacing={2} style={{ height: "100%", width: "100%" }}>
-        <Grid
-          size={2}
-          style={{
-            background: "#FFF5E1",
-            borderRadius: "0.5rem",
-          }}
-        >
+    <Box>
+      <Grid
+        container
+        spacing={1}
+        sx={{ flexDirection: { xs: "column", sm: "row" } }}
+      >
+        <Grid size={2} sx={{ display: { xs: "none", sm: "flex" } }}>
           <SideNavbar />
         </Grid>
-        <Grid size={10} style={{ marginTop: "1rem" }}>
-          {/* this is grid for charts */}
-          <Box style={{ padding: "0.5rem 2rem" }}>
+        <Grid size={2} sx={{ display: { xs: "block", sm: "none" } }}>
+          <MobileSideNavbar />
+        </Grid>
+        <Grid size={10} className="full-display-mobile">
+          <Box sx={{ padding: "1rem" }}>
             <Grid
               container
               spacing={2}
-              style={{
-                background: "#2E8A57",
-                borderRadius: "2rem",
-                padding: "2rem",
+              columns={{ xs: 4, sm: 8, md: 12 }}
+              justifyContent={"space-between"}
+              sx={{
+                padding: "1rem",
+                background: "#2E8A59",
+                borderRadius: "0.75rem",
               }}
             >
-              <Grid size={4}>
+              <Grid
+                size={4}
+                sx={{
+                  display: "flex",
+                  flexDirection: "column",
+                  justifyContent: "space-between",
+                }}
+              >
                 <div
-                  className="redeemCodes"
+                  className="gauge"
                   style={{
                     display: "flex",
                     justifyContent: "center",
                     alignItems: "center",
-                    background: "#FFF5E1",
-                    borderRadius: "1rem",
+                    background: "#FFF4E4",
+                    borderRadius: "0.75rem",
+                    height: "45%",
+                    padding: "0rem 1rem",
                   }}
                 >
-                  <div className="text" style={{ color: "#2E8A57" }}>
-                    Reedem Points this week
+                  <div className="title" style={{ color: "#91ED91" }}>
+                    Redeem points this week
                   </div>
-                  <div className="chart">
+                  <div>
                     <Gauge
-                      width={100}
-                      height={100}
-                      value={60}
+                      {...{
+                        width: 100,
+                        height: 100,
+                        valueMax: 10000,
+                        value: redeemPoints,
+                      }}
+                      cornerRadius="50%"
                       sx={(theme) => ({
                         [`& .${gaugeClasses.valueText}`]: {
-                          fontSize: 20,
+                          color: "#91ED91",
                         },
                         [`& .${gaugeClasses.valueArc}`]: {
-                          fill: "#2E8A57",
+                          fill: "#91ED91",
                         },
                         [`& .${gaugeClasses.referenceArc}`]: {
                           fill: theme.palette.text.disabled,
@@ -71,27 +91,32 @@ function Dashboard() {
                   </div>
                 </div>
                 <div
-                  className="rewarderCodes"
+                  className="gauge"
                   style={{
                     display: "flex",
-                    marginTop: "1rem",
                     justifyContent: "center",
                     alignItems: "center",
-                    background: "#FFF5E1",
-                    borderRadius: "1rem",
+                    background: "#FFF4E4",
+                    borderRadius: "0.75rem",
+                    height: "45%",
+                    padding: "0rem 1rem",
                   }}
                 >
-                  <div className="text" style={{ color: "#FE5150" }}>
-                    Rewarder Points this week
+                  <div className="title" style={{ color: "#FE5150" }}>
+                    Rewarded points this week
                   </div>
-                  <div className="chart">
+                  <div>
                     <Gauge
-                      width={100}
-                      height={100}
-                      value={60}
+                      {...{
+                        width: 100,
+                        height: 100,
+                        valueMax: 10000,
+                        value: rewardedPoints,
+                      }}
+                      cornerRadius="50%"
                       sx={(theme) => ({
                         [`& .${gaugeClasses.valueText}`]: {
-                          fontSize: 20,
+                          color: "#FE5150",
                         },
                         [`& .${gaugeClasses.valueArc}`]: {
                           fill: "#FE5150",
@@ -102,14 +127,11 @@ function Dashboard() {
                       })}
                     />
                   </div>
-                </div>
+                </div>{" "}
               </Grid>
               <Grid
                 size={8}
-                style={{
-                  borderRadius: "1rem",
-                  background: "#FFF5E1",
-                }}
+                sx={{ background: "#FFF4E4", borderRadius: "0.75rem" }}
               >
                 <LineChart
                   xAxis={[{ data: [1, 2, 3, 5, 8, 10] }]}
@@ -118,16 +140,17 @@ function Dashboard() {
                       data: [2, 5.5, 2, 8.5, 1.5, 5],
                     },
                   ]}
-                  width={500}
-                  height={200}
+                  // width={400}
+                  height={300}
+                  sx={{ width: { sx: "100%" } }}
                 />
               </Grid>
             </Grid>
           </Box>
-          <Box style={{ padding: "0.5rem 2rem" }}>
-            <Grid container spacing={2}>
+          <Box sx={{ padding: "1rem" }}>
+            <Grid container spacing={2} columns={{ xs: 4, sm: 8, md: 12 }}>
               <Grid size={3}>
-                <h3>Popular Rewards</h3>
+                <h3 style={{ color: "#434D55" }}>Popular Rewards</h3>
               </Grid>
               <Grid
                 size={3}
@@ -140,7 +163,6 @@ function Dashboard() {
                   style={{
                     background: "none",
                     color: "#2D8856",
-                    padding: "0rem",
                     borderRadius: "0.45rem",
                   }}
                   onClick={() => setDisplayCount(products.length)}
@@ -150,13 +172,13 @@ function Dashboard() {
               </Grid>
             </Grid>
           </Box>
-          <Box style={{ padding: "0.5rem 2rem" }}>
+          <Box sx={{ padding: "1rem" }}>
             <Grid container spacing={2} sx={{ rowGap: 4, columnGap: 2 }}>
               {products
                 .slice(0, displayCount)
                 .map((e: ProductType, index: number) => (
                   <Grid size={3} key={e.id}>
-                    <Product product={{ ...e }} key={e.id} />
+                    <Product product={{ ...e }} key={e.id} manage={false} />
                   </Grid>
                 ))}
             </Grid>

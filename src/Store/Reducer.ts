@@ -16,6 +16,8 @@ export type initialState = {
   selectedProduct: Product | {};
   updateRewardsModal: boolean;
   addRewardsModal: boolean;
+  rewardedPoints: number;
+  redeemPoints: number;
 };
 const data: initialState = {
   products: new Array(1).fill(0).map((e) => ({
@@ -30,6 +32,8 @@ const data: initialState = {
   selectedProduct: {},
   updateRewardsModal: false,
   addRewardsModal: false,
+  redeemPoints: 0,
+  rewardedPoints: 0,
 };
 
 const reducer = createSlice({
@@ -48,18 +52,21 @@ const reducer = createSlice({
     },
     addNewProduct: (state, action: { payload: Product; type: string }) => {
       // add new product to store
+      const { rewardPoints } = action.payload;
       return {
         ...state,
+        redeemPoints: state.redeemPoints + Number(rewardPoints),
         products: [...state.products, action.payload],
       };
     },
     removeProduct: (state, action) => {
       // remove product from store
-      const { id } = action.payload;
+      const { id, rewardPoints } = action.payload;
       let productsCopy = state.products;
       productsCopy = productsCopy.filter((e, index) => e.id != id);
       return {
         ...state,
+        rewardedPoints: state.rewardedPoints + Number(rewardPoints),
         products: [...productsCopy],
       };
     },

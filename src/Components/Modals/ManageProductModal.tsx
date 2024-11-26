@@ -19,14 +19,17 @@ import { useDispatch, useSelector } from "react-redux";
 import { RootStore } from "../../Store";
 import { SubmitHandler, useForm, Controller } from "react-hook-form";
 import { removeProduct } from "../../Store/Reducer";
+import ImageIcon from "@mui/icons-material/Image";
+import CloudUploadIcon from "@mui/icons-material/CloudUpload";
+import { styled } from "@mui/material/styles";
 
 const style = {
   position: "absolute",
   top: "50%",
   left: "50%",
   transform: "translate(-50%, -50%)",
-  width: 700,
-  height: 400,
+  width: "70%",
+  height: { xs: "90%", sm: "450px", m: "450px" },
   bgcolor: "background.paper",
   boxShadow: 24,
   borderRadius: "0.5rem",
@@ -41,12 +44,25 @@ type FormFields = {
   description: string;
 };
 
+const VisuallyHiddenInput = styled("input")({
+  clip: "rect(0 0 0 0)",
+  clipPath: "inset(50%)",
+  height: 1,
+  overflow: "hidden",
+  position: "absolute",
+  bottom: 0,
+  left: 0,
+  whiteSpace: "nowrap",
+  width: 1,
+});
 const ManageRewardsModal = () => {
-  const [productImage, setProductImage] = React.useState<null | string>(null);
-
   const selectedProduct = useSelector(
     (state: RootStore) => state.selectedProduct
   ) as ProductType;
+  const [productImage, setProductImage] = React.useState<null | string>(
+    selectedProduct.image
+  );
+
   const open = useSelector((state: RootStore) => state.updateRewardsModal);
   const dispatch = useDispatch();
   const { formState, register, handleSubmit, control } = useForm<FormFields>({
@@ -68,8 +84,8 @@ const ManageRewardsModal = () => {
     closeModal();
   };
 
-  const deleteProduct = (productID: string) => {
-    dispatch(removeProduct({ id: productID }));
+  const deleteProduct = (productID: string, rewardPoints: number) => {
+    dispatch(removeProduct({ id: productID, rewardPoints }));
     closeModal();
   };
   function handleProductImage(e: React.ChangeEvent<HTMLInputElement>) {
@@ -90,7 +106,9 @@ const ManageRewardsModal = () => {
       >
         <form onSubmit={handleSubmit(updateProductHandler)}>
           <Box sx={style}>
-            <Grid container spacing={2}>
+            <h4 style={{ color: "#AA6450" }}>Update Reward</h4>
+            <h6 style={{ color: "#434D55" }}>Reward details</h6>
+            <Grid container spacing={2} columns={{ xs: 4, sm: 8, md: 12 }}>
               <Grid size={6}>
                 <FormControl fullWidth>
                   {/* Use TextField instead of Input for Reward Title */}
@@ -102,6 +120,7 @@ const ManageRewardsModal = () => {
                       background: "#FFF4E4",
                       marginTop: "0.5rem",
                       borderRadius: "0.5rem",
+                      color: "#434D55",
                     }}
                   />
 
@@ -117,6 +136,7 @@ const ManageRewardsModal = () => {
                           background: "#FFF4E4",
                           marginTop: "0.5rem",
                           borderRadius: "0.5rem",
+                          color: "#434D55",
                         }}
                       >
                         <MenuItem value="" disabled>
@@ -157,8 +177,72 @@ const ManageRewardsModal = () => {
                   />
                 </FormControl>
               </Grid>
-              <Grid size={6}>
-                <Input type="file" onChange={handleProductImage} />
+              <Grid size={6} sx={{ padding: "0.5rem" }}>
+                <div
+                  className="upload-file-container"
+                  style={{
+                    display: "flex",
+                    justifyContent: "center",
+                    flexDirection: "column",
+                    gap: "2rem",
+                    borderRadius: "0.75rem",
+                    alignItems: "center",
+                    height: "12rem",
+                    background: "#FFF4E4",
+                    padding: "1rem 1rem",
+                  }}
+                >
+                  <div
+                    className="file-uploaded-img"
+                    style={{ maxWidth: "5rem" }}
+                  >
+                    {(productImage && (
+                      <img
+                        src=""
+                        alt=""
+                        srcSet={productImage}
+                        style={{
+                          width: "100%",
+                          height: "100%",
+                          objectFit: "contain",
+                        }}
+                      />
+                    )) || (
+                      <ImageIcon sx={{ color: "#2E8956", fontSize: "3rem" }} />
+                    )}
+                  </div>
+                  <div className="upload-btn">
+                    <Button
+                      component="label"
+                      role={undefined}
+                      variant="contained"
+                      tabIndex={-1}
+                      startIcon={<CloudUploadIcon sx={{ color: "#2E8956" }} />}
+                      style={{
+                        color: "#2E8956 !important",
+                        boxShadow: "none",
+                        background: "#FFF4E4",
+                      }}
+                    >
+                      <span
+                        style={{
+                          color: "#2E8956",
+                        }}
+                      >
+                        Upload Image
+                      </span>
+                      <VisuallyHiddenInput
+                        type="file"
+                        onChange={handleProductImage}
+                        multiple
+                      />
+                    </Button>
+                    <br />
+                  </div>
+                  <span style={{ fontSize: "0.7rem", color: "#434D55" }}>
+                    Upload a cover image for your product
+                  </span>
+                </div>
                 <Box sx={{ marginTop: "1rem", display: "flex", gap: "1rem" }}>
                   <Button
                     type="submit"
@@ -181,7 +265,12 @@ const ManageRewardsModal = () => {
                       border: "none",
                       color: "#FFF",
                     }}
-                    onClick={() => deleteProduct(selectedProduct.id)}
+                    onClick={() =>
+                      deleteProduct(
+                        selectedProduct.id,
+                        selectedProduct.rewardPoints
+                      )
+                    }
                     variant="outlined"
                   >
                     Delete
